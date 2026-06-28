@@ -50,8 +50,16 @@ def main() -> int:
     # Load previous state BEFORE overwriting the JSON
     previous_state = load_previous_state(args.json_out)
 
+    if args.use_browser:
+        print("📱 Mode Playwright activé — scraping plus lent mais contourne WAF")
+    else:
+        print("⚡ Mode requests (HTTP classique) — plus rapide")
+
     try:
         results = scan_targets(products, sites, use_browser=args.use_browser)
+    except KeyboardInterrupt:
+        print("\n⏹️  Scan interrompu par l'utilisateur")
+        return 130
     finally:
         # Clean up browser if used
         if args.use_browser:
@@ -61,10 +69,8 @@ def main() -> int:
     write_json(results, args.json_out)
     write_html(results, args.template_dir, args.html_out)
 
-    print(f"OK - {len(results)} checks generated")
-    print(f"HTML dashboard: {args.html_out}")
-    if args.use_browser:
-        print("⚠️  Browser mode used (slower but better anti-bot protection)")
+    print(f"✓ OK - {len(results)} checks générés")
+    print(f"📊 Dashboard HTML: {args.html_out}")
 
     # ── Email notifications ───────────────────────────────────────────────────
     email_cfg = load_email_config_from_env()

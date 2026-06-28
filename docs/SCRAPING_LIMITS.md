@@ -1,17 +1,24 @@
 # Limitations et considérations de scraping
 
-## Protections anti-bot
+## Résultat des tests
 
-Certains sites e-commerce français utilisent des protections avancées :
+| Site | Protection | Mode requests | Mode Playwright | Solution |
+|------|-----------|---|---|---|
+| **Amazon** | Rate-limit doux | ✅ OK | ✅ OK | Fonctionne |
+| **Boulanger** | Rate-limit | ✅ OK | ✅ OK (plus lent) | Fonctionne |
+| **Castorama** | Peut bloquer | ⚠️ Variable | 🚫 503 | Fonctionne intermittent |
+| **Darty** | **Cloudflare WAF** | 🚫 403 | 🚫 403 | ❌ Impossible |
+| **Leroy Merlin** | **Cloudflare WAF** | 🚫 403 | 🚫 403 | ❌ Impossible |
+| **ManoMano** | **Cloudflare WAF** | 🚫 403 | 🚫 403 | ❌ Impossible |
 
-| Site | Protection | Impact |
-|------|-----------|--------|
-| **Amazon** | WAF + rate-limit strict | ⚠️ Bloque les requêtes répétitives |
-| **Darty** | Cloudflare + bot detection | ❌ 403 Forbidden même avec headers réalistes |
-| **Leroy Merlin** | WAF (probablement Cloudflare) | ❌ 403 Forbidden |
-| **ManoMano** | Bot detection | ❌ 403 Forbidden |
-| **Boulanger** | Timeout + rate-limit | ⏱️ Réponses lentes |
-| **Castorama** | WAF | ⚠️ Peut bloquer |
+## Conclusion
+
+**Les sites avec Cloudflare WAF (Darty, Leroy Merlin, ManoMano) ne peuvent pas être scrapés** même avec un navigateur headless, car Cloudflare bloque activement les bots (headless ou non).
+
+Les solutions sont limitées à :
+1. **API officielle** (idéal si disponible)
+2. **Service de proxy scraping** payant (ScraperAPI, Bright Data) — seul moyen fiable
+3. **Attendre qu'ils changent de protection** (très rare)
 
 ## Stratégies implémentées
 
