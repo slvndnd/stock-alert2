@@ -33,6 +33,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Send email for every in-stock product, not just new ones",
     )
+    parser.add_argument(
+        "--use-browser",
+        action="store_true",
+        help="Use Playwright headless browser (slower but contours WAF/Cloudflare)",
+    )
     return parser
 
 
@@ -45,13 +50,21 @@ def main() -> int:
     # Load previous state BEFORE overwriting the JSON
     previous_state = load_previous_state(args.json_out)
 
-    results = scan_targets(products, sites)
+    try:
+        results = scan_targets(products, sites, use_browser=args.use_browser)
+    finally:
+        # Clean up browser if used
+        if args.use_browser:
+            from .browser_fetcher import close_browser
+            close_browser()
 
     write_json(results, args.json_out)
     write_html(results, args.template_dir, args.html_out)
 
     print(f"OK - {len(results)} checks generated")
     print(f"HTML dashboard: {args.html_out}")
+    if args.use_browser:
+        print("⚠️  Browser mode used (slower but better anti-bot protection)")
 
     # ── Email notifications ───────────────────────────────────────────────────
     email_cfg = load_email_config_from_env()

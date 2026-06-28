@@ -22,6 +22,10 @@ stock-alert = "stock_alert.cli:main"
 dev = [
   "pytest>=8.2.0",
 ]
+browser = [
+  "playwright>=1.40.0",
+]
+
 
 [tool.setuptools]
 package-dir = {"" = "src"}

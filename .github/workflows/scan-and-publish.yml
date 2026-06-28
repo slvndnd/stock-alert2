@@ -31,6 +31,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install playwright>=1.40.0
+          python -m playwright install chromium
 
       - name: Run scan
         env:
@@ -41,11 +43,17 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
         run: |
+          # Use --use-browser to contour Cloudflare/WAF protections
+          # (slower but more reliable for blocked sites like Darty, Leroy Merlin, ManoMano)
+          # Remove the comment below to enable browser mode:
+          # BROWSER_FLAG="--use-browser"
+          
           python -m stock_alert.cli \
             --sites config/sites.yaml \
             --watchlist config/watchlist.yaml \
             --json-out docs/latest.json \
-            --html-out docs/index.html
+            --html-out docs/index.html \
+            ${BROWSER_FLAG:-}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

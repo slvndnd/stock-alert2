@@ -32,18 +32,22 @@ Certains sites e-commerce français utilisent des protections avancées :
 
 Pour une fiabilité maximale sur tous les sites :
 
-### 1. **APIs officielles** (recommandé)
+### 1. **Navigateur headless Playwright** ✅ IMPLÉMENTÉ
+- [Playwright](https://playwright.dev/) — moderne, rapide, cross-platform
+- Exécute un vrai navigateur Chromium (contourne Cloudflare + JavaScript)
+- Mode `--use-browser` disponible en CLI
+- Plus lent (2-3x) mais très fiable
+- À activer dans `.github/workflows/scan-and-publish.yml` si besoin
+
+### 2. **APIs officielles** (recommandé si dispo)
 - **Amazon** : [Product Advertising API](https://developer.amazon.com/docs/product-advertising/getting-started.html)
 - **Autres** : vérifier la documentation de chaque site
 
-### 2. **Service de scraping proxy** (coûteux mais fiable)
+### 3. **Service de scraping proxy** (coûteux mais fiable)
 - [ScraperAPI](https://www.scraperapi.com/) — gère Cloudflare + JavaScript
 - [Bright Data](https://brightdata.com/) — réseau proxy résidentiel
 - [Oxylabs](https://oxylabs.io/) — scraping avec rotation de proxies
 
-### 3. **Navigateur headless** (JavaScript + interaction réelle)
-- [Selenium](https://www.selenium.dev/) — WebDriver
-- [Playwright](https://playwright.dev/) — moderne et rapide
 
 ### 4. **Rotation de proxies** (anti-ban)
 - [ProxyMesh](https://www.proxymesh.com/)

@@ -45,6 +45,28 @@ PYTHONPATH=src python -m stock_alert.cli \
 
 La page generee est `docs/index.html`.
 
+### Mode Playwright (contourne WAF/Cloudflare)
+
+Pour les sites protégés (Darty, Leroy Merlin, ManoMano), tu peux utiliser le mode Playwright qui exécute un vrai navigateur :
+
+```bash
+# D'abord installer Playwright (optionnel)
+pip install playwright
+python -m playwright install chromium
+
+# Ensuite lancer le scan avec --use-browser
+PYTHONPATH=src python -m stock_alert.cli \
+  --sites config/sites.yaml \
+  --watchlist config/watchlist.yaml \
+  --json-out docs/latest.json \
+  --html-out docs/index.html \
+  --use-browser
+```
+
+⚠️ **Note** : le mode browser est **2-3x plus lent** mais contourne les protections avancées.
+
+Pour l'activer automatiquement dans GitHub Actions, décommente la ligne `BROWSER_FLAG` dans `.github/workflows/scan-and-publish.yml`.
+
 ## Lancer les tests
 
 ```bash

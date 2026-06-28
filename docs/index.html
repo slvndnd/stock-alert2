@@ -84,6 +84,7 @@
     .status.ok { color: var(--ok); }
     .status.ko { color: var(--ko); }
     .status.unknown { color: var(--unknown); }
+    .status.blocked { color: #f97316; }
 
     a {
       color: var(--link);
@@ -131,11 +132,11 @@
 <body>
 <div class="container">
   <h1>Stock Alert Dashboard</h1>
-  <div class="subtitle">Derniere mise a jour: 28/06/2026 12:27 UTC</div>
+  <div class="subtitle">Derniere mise a jour: 28/06/2026 13:32 UTC</div>
 
   
   <section class="product">
-    <div class="product-header">Perceuse Bosch GSB 18V-55</div>
+    <div class="product-header">Midea PortaSplit</div>
     <table>
       <thead>
       <tr>
@@ -149,85 +150,31 @@
       <tbody>
       
       
-      
-      <tr>
-        <td data-label="Site">🟢 Leroy Merlin</td>
-        <td data-label="Statut" class="status unknown">⚠️ Erreur: HTTPError</td>
-        <td data-label="Prix">
-          
-            -
-          
-        </td>
-        <td data-label="Titre detecte">
-          -
-          
-            <div class="note">403 Client Error: Forbidden for url: https://www.leroymerlin.fr/produits/outillage/outillage-electroportatif/perceuse-visseuse/</div>
-          
-        </td>
-        <td data-label="Lien"><a href="https://www.leroymerlin.fr/produits/outillage/outillage-electroportatif/perceuse-visseuse/" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td data-label="Site">🟣 ManoMano</td>
-        <td data-label="Statut" class="status unknown">⚠️ Erreur: HTTPError</td>
-        <td data-label="Prix">
-          
-            -
-          
-        </td>
-        <td data-label="Titre detecte">
-          -
-          
-            <div class="note">403 Client Error: Forbidden for url: https://www.manomano.fr/recherche/perceuse%20bosch%2018v</div>
-          
-        </td>
-        <td data-label="Lien"><a href="https://www.manomano.fr/recherche/perceuse%20bosch%2018v" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
-      </tr>
-      
-      </tbody>
-    </table>
-  </section>
-  
-  <section class="product">
-    <div class="product-header">PlayStation 5 Slim</div>
-    <table>
-      <thead>
-      <tr>
-        <th>Site</th>
-        <th>Statut</th>
-        <th>Prix</th>
-        <th>Titre detecte</th>
-        <th>Lien</th>
-      </tr>
-      </thead>
-      <tbody>
       
       
       
       <tr>
         <td data-label="Site">🟧 Amazon</td>
-        <td data-label="Statut" class="status unknown">⚠️ Erreur: HTTPError</td>
+        <td data-label="Statut" class="status ko">❌ Rupture / indisponible</td>
         <td data-label="Prix">
           
-            -
+            <span class="pill">754.94 €</span>
           
         </td>
         <td data-label="Titre detecte">
-          -
-          
-            <div class="note">404 Client Error: Not Found for url: https://www.amazon.fr/dp/B0CLTBHXZ8</div>
+          MIDEA Climatiseur PortaSplit Mobile 12000 BTU 4-en-1
           
         </td>
-        <td data-label="Lien"><a href="https://www.amazon.fr/dp/B0CLTBHXZ8" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+        <td data-label="Lien"><a href="https://www.amazon.fr/Climatiseur-Climatisation-rafra%C3%AEchisseur-d%C3%A9shumidificateur-ventilateur/dp/B0CY2YW8BT?ref_=ast_sto_dp" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
       </tr>
+      
+      
       
       
       
       <tr>
         <td data-label="Site">🔴 Darty</td>
-        <td data-label="Statut" class="status unknown">⚠️ Erreur: HTTPError</td>
+        <td data-label="Statut" class="status blocked">🚫 Accès bloqué</td>
         <td data-label="Prix">
           
             -
@@ -236,10 +183,92 @@
         <td data-label="Titre detecte">
           -
           
-            <div class="note">403 Client Error: Forbidden for url: https://www.darty.com/nav/achat/jeux_loisirs/console_jeux/console_sony/sony_ps5_slim.html</div>
+            <div class="note">Accès refusé (403 Forbidden) — site protégé anti-bot</div>
           
         </td>
-        <td data-label="Lien"><a href="https://www.darty.com/nav/achat/jeux_loisirs/console_jeux/console_sony/sony_ps5_slim.html" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+        <td data-label="Lien"><a href="https://www.darty.com/nav/achat/gros_electromenager/chauffage_climatisation/climatiseur/midea_mmcs-12hrn8-qrd0.html" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td data-label="Site">🟦 Boulanger</td>
+        <td data-label="Statut" class="status unknown">⚪ Inconnu</td>
+        <td data-label="Prix">
+          
+            -
+          
+        </td>
+        <td data-label="Titre detecte">
+          -
+          
+            <div class="note">Aucun alias de produit detecte dans le titre | Prix non detecte automatiquement | Disponibilite non determinee automatiquement</div>
+          
+        </td>
+        <td data-label="Lien"><a href="https://www.boulanger.com/ref/1216685" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+      </tr>
+      
+      
+      
+      
+      
+      <tr>
+        <td data-label="Site">🟣 ManoMano</td>
+        <td data-label="Statut" class="status blocked">🚫 Accès bloqué</td>
+        <td data-label="Prix">
+          
+            -
+          
+        </td>
+        <td data-label="Titre detecte">
+          -
+          
+            <div class="note">Accès refusé (403 Forbidden) — site protégé anti-bot</div>
+          
+        </td>
+        <td data-label="Lien"><a href="https://www.manomano.fr/p/midea-climatiseur-split-mobile-reversible-froid-chaud-3500w12000btu-wifi-deshumidificateur-ventilateur-jusqua-40m2-kit-fenetre-inclus-83810402" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+      </tr>
+      
+      
+      
+      
+      
+      <tr>
+        <td data-label="Site">🟢 Leroy Merlin</td>
+        <td data-label="Statut" class="status blocked">🚫 Accès bloqué</td>
+        <td data-label="Prix">
+          
+            -
+          
+        </td>
+        <td data-label="Titre detecte">
+          -
+          
+            <div class="note">Accès refusé (403 Forbidden) — site protégé anti-bot</div>
+          
+        </td>
+        <td data-label="Lien"><a href="https://www.leroymerlin.fr/produits/climatiseur-split-mobile-reversible-portasplit-midea-par-optimea-93857579.html" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+      </tr>
+      
+      
+      
+      
+      
+      <tr>
+        <td data-label="Site">🟨 Castorama</td>
+        <td data-label="Statut" class="status ko">❌ Rupture / indisponible</td>
+        <td data-label="Prix">
+          
+            -
+          
+        </td>
+        <td data-label="Titre detecte">
+          Climatiseur portasplit Midea réversible 3500W
+          
+            <div class="note">Aucun alias de produit detecte dans le titre | Prix non detecte automatiquement</div>
+          
+        </td>
+        <td data-label="Lien"><a href="https://www.castorama.fr/climatiseur-portasplit-midea-reversible-3500w/8431312260509_CAFR.prd" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
       </tr>
       
       </tbody>

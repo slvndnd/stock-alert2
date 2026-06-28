@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timezone
 
 from .fetcher import fetch_page
 from .models import ProductConfig, ScanResult, SiteConfig
 from .parser import parse_product_page
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _status_emoji(in_stock: bool | None) -> str:
@@ -18,7 +21,25 @@ def _status_emoji(in_stock: bool | None) -> str:
 def scan_targets(
     products: list[ProductConfig],
     sites: dict[str, SiteConfig],
+    use_browser: bool = False,
 ) -> list[ScanResult]:
+    """
+    Scan products on target sites.
+
+    Args:
+        products: List of products to scan
+        sites: Map of site configurations
+        use_browser: If True, use Playwright headless browser. Otherwise use requests.
+
+    Returns:
+        List of scan results
+    """
+    if use_browser:
+        from .browser_fetcher import fetch_with_browser
+        fetch_fn = fetch_with_browser
+    else:
+        fetch_fn = fetch_page  # type: ignore
+
     now = datetime.now(tz=timezone.utc)
     results: list[ScanResult] = []
 
@@ -26,7 +47,7 @@ def scan_targets(
         for target in product.targets:
             site = sites.get(target.site, SiteConfig(id=target.site, label=target.site, icon="🛒"))
             try:
-                response = fetch_page(target.url)
+                response = fetch_fn(target.url)
 
                 if response.blocked:
                     results.append(
@@ -72,6 +93,7 @@ def scan_targets(
                     )
                 )
             except Exception as exc:  # pragma: no cover
+                LOGGER.exception("Error scanning %s on %s", product.id, target.site)
                 results.append(
                     ScanResult(
                         scanned_at=now,
