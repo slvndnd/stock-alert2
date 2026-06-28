@@ -84,6 +84,7 @@
     .status.ok { color: var(--ok); }
     .status.ko { color: var(--ko); }
     .status.unknown { color: var(--unknown); }
+    .status.blocked { color: #f97316; }
 
     a {
       color: var(--link);
@@ -153,6 +154,8 @@
       {% set status_class = 'ok' %}
       {% elif row.in_stock is sameas false %}
       {% set status_class = 'ko' %}
+      {% elif row.availability == 'Accès bloqué' %}
+      {% set status_class = 'blocked' %}
       {% endif %}
       <tr>
         <td data-label="Site">{{ row.site_icon }} {{ row.site_label }}</td>

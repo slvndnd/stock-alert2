@@ -27,6 +27,29 @@ def scan_targets(
             site = sites.get(target.site, SiteConfig(id=target.site, label=target.site, icon="🛒"))
             try:
                 response = fetch_page(target.url)
+
+                if response.blocked:
+                    results.append(
+                        ScanResult(
+                            scanned_at=now,
+                            product_id=product.id,
+                            product_name=product.display_name,
+                            site_id=site.id,
+                            site_label=site.label,
+                            site_icon=site.icon,
+                            target_url=target.url,
+                            matched_name=None,
+                            title=None,
+                            price=None,
+                            availability="Accès bloqué",
+                            in_stock=None,
+                            status_emoji="🚫",
+                            currency=None,
+                            notes=[response.blocked_reason],
+                        )
+                    )
+                    continue
+
                 parsed = parse_product_page(response.text, aliases=product.names)
 
                 results.append(
