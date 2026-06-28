@@ -4,6 +4,7 @@ products:
     names:
       - Midea PortaSplit
       - Midea Porta Split
+      - MIDEA Climatiseur PortaSplit
       - MMCS
     targets:
       - site: amazon
@@ -12,3 +13,9 @@ products:
         url: https://www.darty.com/nav/achat/gros_electromenager/chauffage_climatisation/climatiseur/midea_mmcs-12hrn8-qrd0.html
       - site: boulanger
         url: https://www.boulanger.com/ref/1216685
+      - site: manomano
+        url: https://www.manomano.fr/p/midea-climatiseur-split-mobile-reversible-froid-chaud-3500w12000btu-wifi-deshumidificateur-ventilateur-jusqua-40m2-kit-fenetre-inclus-83810402
+      - site: leroy_merlin
+        url: https://www.leroymerlin.fr/produits/climatiseur-split-mobile-reversible-portasplit-midea-par-optimea-93857579.html
+      - site: castorama
+        url: https://www.castorama.fr/climatiseur-portasplit-midea-reversible-3500w/8431312260509_CAFR.prd
