@@ -1,11 +1,24 @@
 from __future__ import annotations
 
 import argparse
+import logging
 from pathlib import Path
 
 from .config import load_sites, load_watchlist
+from .notifier import (
+    find_newly_in_stock,
+    load_email_config_from_env,
+    load_previous_state,
+    send_alert_email,
+)
 from .render import write_html, write_json
 from .scanner import scan_targets
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
+)
+LOGGER = logging.getLogger(__name__)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -15,6 +28,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--json-out", type=Path, default=Path("data/latest.json"))
     parser.add_argument("--html-out", type=Path, default=Path("docs/index.html"))
     parser.add_argument("--template-dir", type=Path, default=Path("templates"))
+    parser.add_argument(
+        "--always-alert",
+        action="store_true",
+        help="Send email for every in-stock product, not just new ones",
+    )
     return parser
 
 
@@ -23,6 +41,10 @@ def main() -> int:
 
     sites = load_sites(args.sites)
     products = load_watchlist(args.watchlist)
+
+    # Load previous state BEFORE overwriting the JSON
+    previous_state = load_previous_state(args.json_out)
+
     results = scan_targets(products, sites)
 
     write_json(results, args.json_out)
@@ -30,6 +52,19 @@ def main() -> int:
 
     print(f"OK - {len(results)} checks generated")
     print(f"HTML dashboard: {args.html_out}")
+
+    # ── Email notifications ───────────────────────────────────────────────────
+    email_cfg = load_email_config_from_env()
+    if email_cfg:
+        alerts = find_newly_in_stock(
+            results,
+            previous_state,
+            only_on_restock=not args.always_alert,
+        )
+        if alerts:
+            LOGGER.info("%d new in-stock item(s) — sending alert email...", len(alerts))
+        send_alert_email(email_cfg, alerts)
+
     return 0
 
 
