@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stock Alert Dashboard</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --ok: #22c55e;
+      --ko: #ef4444;
+      --unknown: #64748b;
+      --link: #38bdf8;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, #020617, var(--bg));
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 6px 0 24px;
+    }
+
+    .product {
+      background: rgba(17, 24, 39, 0.8);
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .product-header {
+      padding: 14px 16px;
+      background: #0b1220;
+      border-bottom: 1px solid #1e293b;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid #1f2937;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status {
+      font-weight: 600;
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.ko { color: var(--ko); }
+    .status.unknown { color: var(--unknown); }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #334155;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 860px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead {
+        display: none;
+      }
+      td {
+        padding: 10px 16px;
+      }
+      td::before {
+        content: attr(data-label) ": ";
+        color: var(--muted);
+        display: inline-block;
+        min-width: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Stock Alert Dashboard</h1>
+  <div class="subtitle">Derniere mise a jour: 28/06/2026 12:27 UTC</div>
+
+  
+  <section class="product">
+    <div class="product-header">Perceuse Bosch GSB 18V-55</div>
+    <table>
+      <thead>
+      <tr>
+        <th>Site</th>
+        <th>Statut</th>
+        <th>Prix</th>
+        <th>Titre detecte</th>
+        <th>Lien</th>
+      </tr>
+      </thead>
+      <tbody>
+      
+      
+      
+      <tr>
+        <td data-label="Site">🟢 Leroy Merlin</td>
+        <td data-label="Statut" class="status unknown">⚠️ Erreur: HTTPError</td>
+        <td data-label="Prix">
+          
+            -
+          
+        </td>
+        <td data-label="Titre detecte">
+          -
+          
+            <div class="note">403 Client Error: Forbidden for url: https://www.leroymerlin.fr/produits/outillage/outillage-electroportatif/perceuse-visseuse/</div>
+          
+        </td>
+        <td data-label="Lien"><a href="https://www.leroymerlin.fr/produits/outillage/outillage-electroportatif/perceuse-visseuse/" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td data-label="Site">🟣 ManoMano</td>
+        <td data-label="Statut" class="status unknown">⚠️ Erreur: HTTPError</td>
+        <td data-label="Prix">
+          
+            -
+          
+        </td>
+        <td data-label="Titre detecte">
+          -
+          
+            <div class="note">403 Client Error: Forbidden for url: https://www.manomano.fr/recherche/perceuse%20bosch%2018v</div>
+          
+        </td>
+        <td data-label="Lien"><a href="https://www.manomano.fr/recherche/perceuse%20bosch%2018v" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+      </tr>
+      
+      </tbody>
+    </table>
+  </section>
+  
+  <section class="product">
+    <div class="product-header">PlayStation 5 Slim</div>
+    <table>
+      <thead>
+      <tr>
+        <th>Site</th>
+        <th>Statut</th>
+        <th>Prix</th>
+        <th>Titre detecte</th>
+        <th>Lien</th>
+      </tr>
+      </thead>
+      <tbody>
+      
+      
+      
+      <tr>
+        <td data-label="Site">🟧 Amazon</td>
+        <td data-label="Statut" class="status unknown">⚠️ Erreur: HTTPError</td>
+        <td data-label="Prix">
+          
+            -
+          
+        </td>
+        <td data-label="Titre detecte">
+          -
+          
+            <div class="note">404 Client Error: Not Found for url: https://www.amazon.fr/dp/B0CLTBHXZ8</div>
+          
+        </td>
+        <td data-label="Lien"><a href="https://www.amazon.fr/dp/B0CLTBHXZ8" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td data-label="Site">🔴 Darty</td>
+        <td data-label="Statut" class="status unknown">⚠️ Erreur: HTTPError</td>
+        <td data-label="Prix">
+          
+            -
+          
+        </td>
+        <td data-label="Titre detecte">
+          -
+          
+            <div class="note">403 Client Error: Forbidden for url: https://www.darty.com/nav/achat/jeux_loisirs/console_jeux/console_sony/sony_ps5_slim.html</div>
+          
+        </td>
+        <td data-label="Lien"><a href="https://www.darty.com/nav/achat/jeux_loisirs/console_jeux/console_sony/sony_ps5_slim.html" target="_blank" rel="noopener noreferrer">Voir la fiche produit</a></td>
+      </tr>
+      
+      </tbody>
+    </table>
+  </section>
+  
+</div>
+</body>
+</html>

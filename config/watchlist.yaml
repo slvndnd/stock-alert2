@@ -1,0 +1,14 @@
+products:
+  - id: midea-portasplit
+    display_name: Midea PortaSplit
+    names:
+      - Midea PortaSplit
+      - Midea Porta Split
+      - MMCS
+    targets:
+      - site: amazon
+        url: https://www.amazon.fr/Climatiseur-Climatisation-rafra%C3%AEchisseur-d%C3%A9shumidificateur-ventilateur/dp/B0CY2YW8BT?ref_=ast_sto_dp
+      - site: darty
+        url: https://www.darty.com/nav/achat/gros_electromenager/chauffage_climatisation/climatiseur/midea_mmcs-12hrn8-qrd0.html
+      - site: boulanger
+        url: https://www.boulanger.com/ref/1216685

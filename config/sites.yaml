@@ -1,0 +1,20 @@
+sites:
+  - id: amazon
+    label: Amazon
+    icon: "🟧"
+  - id: darty
+    label: Darty
+    icon: "🔴"
+  - id: boulanger
+    label: Boulanger
+    icon: "🟦"
+  - id: leroy_merlin
+    label: Leroy Merlin
+    icon: "🟢"
+  - id: castorama
+    label: Castorama
+    icon: "🟨"
+  - id: manomano
+    label: ManoMano
+    icon: "🟣"
+

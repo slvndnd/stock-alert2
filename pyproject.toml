@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stock-alert2"
+version = "0.1.0"
+description = "Scheduled stock and price monitor that publishes an HTML dashboard"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "requests>=2.32.0",
+  "beautifulsoup4>=4.12.0",
+  "PyYAML>=6.0.0",
+  "Jinja2>=3.1.0",
+]
+
+[project.scripts]
+stock-alert = "stock_alert.cli:main"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-q"

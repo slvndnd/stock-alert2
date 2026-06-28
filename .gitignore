@@ -1,0 +1,10 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.idea/
+data/*.json
+docs/latest.json
