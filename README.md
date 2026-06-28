@@ -135,3 +135,6 @@ PYTHONPATH=src python -m stock_alert.cli \
 - Certains sites changent souvent leur HTML ou bloquent les bots; verifier regulierement la qualite des extractions.
 - Respecter les CGU des sites cibles et leur `robots.txt`.
 - Pour un usage intensif, envisager des parsers dedies par site et un proxy anti-blocage.
+
+**Voir aussi** : [SCRAPING_LIMITS.md](docs/SCRAPING_LIMITS.md) pour une analyse détaillée des protections anti-bot par site et les solutions avancées.
+
