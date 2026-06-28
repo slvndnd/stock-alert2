@@ -1,8 +1,9 @@
 from datetime import datetime, timezone
 from unittest.mock import MagicMock, patch
+import os
 
 from stock_alert.models import ScanResult
-from stock_alert.notifier import find_newly_in_stock, send_alert_email, EmailConfig
+from stock_alert.notifier import find_newly_in_stock, send_alert_email, EmailConfig, load_email_config_from_env
 
 
 def _make_result(product_id: str, site_id: str, in_stock: bool | None) -> ScanResult:
@@ -81,4 +82,48 @@ class TestSendAlertEmail:
             mock_server.starttls.assert_called_once()
             mock_server.login.assert_called_once_with("u", "p")
             mock_server.sendmail.assert_called_once()
+
+
+class TestLoadEmailConfigFromEnv:
+    def test_returns_none_when_env_vars_empty(self):
+        """GitHub Actions injects empty strings for undefined secrets."""
+        with patch.dict(os.environ, {
+            "SMTP_HOST": "",
+            "SMTP_USER": "",
+            "SMTP_PASSWORD": "",
+            "ALERT_EMAIL_TO": "",
+        }, clear=True):
+            cfg = load_email_config_from_env()
+            assert cfg is None
+
+    def test_parses_valid_env_vars(self):
+        """Test parsing with all required vars set."""
+        with patch.dict(os.environ, {
+            "SMTP_HOST": "smtp.gmail.com",
+            "SMTP_PORT": "587",
+            "SMTP_USER": "test@gmail.com",
+            "SMTP_PASSWORD": "pass123",
+            "ALERT_EMAIL_TO": "alert@example.com",
+            "SMTP_USE_TLS": "true",
+        }, clear=True):
+            cfg = load_email_config_from_env()
+            assert cfg is not None
+            assert cfg.smtp_host == "smtp.gmail.com"
+            assert cfg.smtp_port == 587
+            assert cfg.smtp_user == "test@gmail.com"
+            assert cfg.use_tls is True
+
+    def test_uses_defaults_for_optional_vars(self):
+        """Test default values for SMTP_PORT and SMTP_USE_TLS."""
+        with patch.dict(os.environ, {
+            "SMTP_HOST": "smtp.gmail.com",
+            "SMTP_USER": "test@gmail.com",
+            "SMTP_PASSWORD": "pass123",
+            "ALERT_EMAIL_TO": "alert@example.com",
+        }, clear=True):
+            cfg = load_email_config_from_env()
+            assert cfg is not None
+            assert cfg.smtp_port == 587
+            assert cfg.use_tls is True
+
 

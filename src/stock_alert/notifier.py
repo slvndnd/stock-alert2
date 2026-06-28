@@ -139,10 +139,10 @@ def load_email_config_from_env() -> EmailConfig | None:
       SMTP_PORT       default: 587
       SMTP_USE_TLS    default: true
     """
-    host = os.getenv("SMTP_HOST")
-    user = os.getenv("SMTP_USER")
-    password = os.getenv("SMTP_PASSWORD")
-    to_addr = os.getenv("ALERT_EMAIL_TO")
+    host = os.getenv("SMTP_HOST", "").strip() or None
+    user = os.getenv("SMTP_USER", "").strip() or None
+    password = os.getenv("SMTP_PASSWORD", "").strip() or None
+    to_addr = os.getenv("ALERT_EMAIL_TO", "").strip() or None
 
     if not all([host, user, password, to_addr]):
         missing = [k for k, v in {
@@ -152,10 +152,16 @@ def load_email_config_from_env() -> EmailConfig | None:
         LOGGER.info("Email alerts disabled — missing env vars: %s", ", ".join(missing))
         return None
 
+    port_str = os.getenv("SMTP_PORT", "587").strip()
+    port = int(port_str) if port_str else 587
+
+    use_tls_str = os.getenv("SMTP_USE_TLS", "true").strip()
+    use_tls = use_tls_str.lower() in ("1", "true", "yes") if use_tls_str else True
+
     return EmailConfig(
         smtp_host=host,
-        smtp_port=int(os.getenv("SMTP_PORT", "587")),
-        use_tls=os.getenv("SMTP_USE_TLS", "true").lower() in ("1", "true", "yes"),
+        smtp_port=port,
+        use_tls=use_tls,
         smtp_user=user,
         smtp_password=password,
         from_address=user,
