@@ -46,7 +46,7 @@ jobs:
           # Use --use-browser to contour Cloudflare/WAF protections
           # (slower but more reliable for blocked sites like Darty, Leroy Merlin, ManoMano)
           # Remove the comment below to enable browser mode:
-          # BROWSER_FLAG="--use-browser"
+          BROWSER_FLAG="--use-browser"
           
           python -m stock_alert.cli \
             --sites config/sites.yaml \
