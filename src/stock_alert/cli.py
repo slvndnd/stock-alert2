@@ -36,7 +36,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--use-browser",
         action="store_true",
-        help="Use Playwright headless browser (slower but contours WAF/Cloudflare)",
+        help="Use Playwright fallback for blocked targets (slower, but can bypass some WAF)",
     )
     return parser
 
@@ -51,7 +51,7 @@ def main() -> int:
     previous_state = load_previous_state(args.json_out)
 
     if args.use_browser:
-        print("📱 Mode Playwright activé — scraping plus lent mais contourne WAF")
+        print("📱 Mode hybride activé — HTTP d'abord, Playwright en fallback sur les blocages")
     else:
         print("⚡ Mode requests (HTTP classique) — plus rapide")
 

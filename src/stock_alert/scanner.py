@@ -34,11 +34,11 @@ def scan_targets(
     Returns:
         List of scan results
     """
+    browser_fetch_fn = None
     if use_browser:
         from .browser_fetcher import fetch_with_browser
-        fetch_fn = fetch_with_browser
-    else:
-        fetch_fn = fetch_page  # type: ignore
+
+        browser_fetch_fn = fetch_with_browser
 
     now = datetime.now(tz=timezone.utc)
     results: list[ScanResult] = []
@@ -47,7 +47,15 @@ def scan_targets(
         for target in product.targets:
             site = sites.get(target.site, SiteConfig(id=target.site, label=target.site, icon="🛒"))
             try:
-                response = fetch_fn(target.url)
+                # Requests remains the primary path. Browser mode only retries blocked targets.
+                response = fetch_page(target.url)
+                if browser_fetch_fn and response.blocked:
+                    browser_response = browser_fetch_fn(target.url)
+                    if not browser_response.blocked:
+                        LOGGER.info("Recovered %s with browser fallback", target.url)
+                        response = browser_response
+                    elif response.status_code == 0 and browser_response.status_code != 0:
+                        response = browser_response
 
                 if response.blocked:
                     results.append(

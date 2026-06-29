@@ -40,3 +40,33 @@ def test_parse_product_page_handles_out_of_stock() -> None:
     assert parsed.in_stock is False
     assert "Rupture" in parsed.availability_text
 
+
+def test_parse_product_page_matches_alias_with_compact_title() -> None:
+    html = """
+    <html>
+      <head><title>MIDEA Climatiseur PortaSplit Mobile 12000 BTU</title></head>
+      <body><div>En stock</div></body>
+    </html>
+    """
+
+    parsed = parse_product_page(html, aliases=["Midea Porta Split", "MMCS"])
+
+    assert parsed.matched_name == "Midea Porta Split"
+
+
+def test_parse_product_page_reads_title_from_og_meta() -> None:
+    html = """
+    <html>
+      <head>
+        <meta property="og:title" content="Climatiseur portasplit Midea reversible 3500W" />
+      </head>
+      <body><h1></h1></body>
+    </html>
+    """
+
+    parsed = parse_product_page(html, aliases=["Midea PortaSplit"])
+
+    assert parsed.title == "Climatiseur portasplit Midea reversible 3500W"
+    assert parsed.matched_name == "Midea PortaSplit"
+
+

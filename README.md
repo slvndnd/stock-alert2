@@ -45,16 +45,16 @@ PYTHONPATH=src python -m stock_alert.cli \
 
 La page generee est `docs/index.html`.
 
-### Mode Playwright (contourne WAF/Cloudflare)
+### Mode Playwright (fallback hybride)
 
-Pour les sites protégés (Darty, Leroy Merlin, ManoMano), tu peux utiliser le mode Playwright qui exécute un vrai navigateur :
+Tu peux activer un mode hybride : tentative HTTP classique d'abord, puis retry Playwright uniquement pour les pages bloquées.
 
 ```bash
 # D'abord installer Playwright (optionnel)
 pip install playwright
 python -m playwright install chromium
 
-# Ensuite lancer le scan avec --use-browser
+# Ensuite lancer le scan avec fallback Playwright
 PYTHONPATH=src python -m stock_alert.cli \
   --sites config/sites.yaml \
   --watchlist config/watchlist.yaml \
@@ -63,9 +63,10 @@ PYTHONPATH=src python -m stock_alert.cli \
   --use-browser
 ```
 
-⚠️ **Note** : le mode browser est **2-3x plus lent** mais contourne les protections avancées.
+⚠️ **Note** : ce mode est plus lent mais evite de degrader les sites qui fonctionnent deja en HTTP.
 
-Pour l'activer automatiquement dans GitHub Actions, décommente la ligne `BROWSER_FLAG` dans `.github/workflows/scan-and-publish.yml`.
+Dans GitHub Actions, le scan planifie (toutes les 2h) reste en HTTP par defaut.
+Pour activer Playwright ponctuellement, lance `Run workflow` puis coche l'input `use_browser`.
 
 ## Lancer les tests
 

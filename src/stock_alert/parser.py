@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from dataclasses import dataclass
 
 from bs4 import BeautifulSoup
@@ -55,6 +56,11 @@ def parse_product_page(html: str, aliases: list[str]) -> ParsedPage:
 def _extract_title(soup: BeautifulSoup) -> str | None:
     if soup.title and soup.title.string:
         return soup.title.string.strip()
+
+    for attrs in ({"property": "og:title"}, {"name": "twitter:title"}, {"name": "title"}):
+        meta = soup.find("meta", attrs=attrs)
+        if meta and meta.get("content"):
+            return str(meta["content"]).strip()
 
     h1 = soup.find("h1")
     if h1 and h1.get_text(strip=True):
@@ -122,9 +128,37 @@ def _extract_availability(soup: BeautifulSoup, raw_html: str) -> tuple[str, bool
 
 
 def _find_matched_alias(title: str, aliases: list[str]) -> str | None:
-    normalized_title = title.lower()
+    normalized_title = _normalize_text(title)
+    compact_title = normalized_title.replace(" ", "")
+    title_tokens = set(normalized_title.split())
+
     for alias in aliases:
-        if alias.lower() in normalized_title:
+        normalized_alias = _normalize_text(alias)
+        if not normalized_alias:
+            continue
+
+        if normalized_alias in normalized_title:
             return alias
+
+        compact_alias = normalized_alias.replace(" ", "")
+        if compact_alias and compact_alias in compact_title:
+            return alias
+
+        compact_tokens = [token for token in normalized_alias.split() if len(token) >= 3]
+        if compact_tokens and all(token in compact_title for token in compact_tokens):
+            return alias
+
+        alias_tokens = [token for token in normalized_alias.split() if len(token) >= 3]
+        if alias_tokens and all(token in title_tokens for token in alias_tokens):
+            return alias
+
     return None
+
+
+def _normalize_text(value: str) -> str:
+    text = unicodedata.normalize("NFKD", value)
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    text = re.sub(r"[^a-zA-Z0-9]+", " ", text.lower())
+    return " ".join(text.split())
+
 

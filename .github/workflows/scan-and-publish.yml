@@ -2,6 +2,12 @@ name: Scan and publish dashboard
 
 on:
   workflow_dispatch:
+    inputs:
+      use_browser:
+        description: "Use Playwright fallback for blocked sites"
+        required: false
+        default: false
+        type: boolean
   schedule:
     # Toutes les 2 heures. Modifier cette cron si besoin.
     - cron: "0 */2 * * *"
@@ -31,8 +37,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install playwright>=1.40.0
-          python -m playwright install chromium
+          if [ "${{ github.event.inputs.use_browser }}" = "true" ]; then
+            pip install playwright>=1.40.0
+            python -m playwright install chromium
+          fi
 
       - name: Run scan
         env:
@@ -43,10 +51,10 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
         run: |
-          # Use --use-browser to contour Cloudflare/WAF protections
-          # (slower but more reliable for blocked sites like Darty, Leroy Merlin, ManoMano)
-          # Remove the comment below to enable browser mode:
-          BROWSER_FLAG="--use-browser"
+          BROWSER_FLAG=""
+          if [ "${{ github.event.inputs.use_browser }}" = "true" ]; then
+            BROWSER_FLAG="--use-browser"
+          fi
           
           python -m stock_alert.cli \
             --sites config/sites.yaml \
