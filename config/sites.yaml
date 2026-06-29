@@ -2,19 +2,25 @@ sites:
   - id: amazon
     label: Amazon
     icon: "🟧"
+    fetch_mode: requests
   - id: darty
     label: Darty
     icon: "🔴"
+    fetch_mode: scraperapi
   - id: boulanger
     label: Boulanger
     icon: "🟦"
+    fetch_mode: requests
   - id: leroy_merlin
     label: Leroy Merlin
     icon: "🟢"
+    fetch_mode: scraperapi
   - id: castorama
     label: Castorama
     icon: "🟨"
+    fetch_mode: requests
   - id: manomano
     label: ManoMano
     icon: "🟣"
+    fetch_mode: scraperapi
 

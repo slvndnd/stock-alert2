@@ -68,6 +68,35 @@ PYTHONPATH=src python -m stock_alert.cli \
 Dans GitHub Actions, le scan planifie (toutes les 2h) reste en HTTP par defaut.
 Pour activer Playwright ponctuellement, lance `Run workflow` puis coche l'input `use_browser`.
 
+### Mode ScraperAPI (fallback proxy anti-blocage)
+
+Pour les sites qui restent bloques en 403 (Darty, Leroy Merlin, ManoMano), active un fallback ScraperAPI.
+
+```bash
+export SCRAPERAPI_KEY=ta_cle_scraperapi
+export SCRAPERAPI_COUNTRY_CODE=fr   # optionnel, defaut: fr
+export SCRAPERAPI_RENDER=false      # optionnel, true si besoin JS
+
+PYTHONPATH=src python -m stock_alert.cli \
+  --sites config/sites.yaml \
+  --watchlist config/watchlist.yaml \
+  --json-out docs/latest.json \
+  --html-out docs/index.html \
+  --use-scraperapi
+```
+
+Tu peux combiner les deux fallbacks:
+
+```bash
+PYTHONPATH=src python -m stock_alert.cli \
+  --sites config/sites.yaml \
+  --watchlist config/watchlist.yaml \
+  --json-out docs/latest.json \
+  --html-out docs/index.html \
+  --use-scraperapi \
+  --use-browser
+```
+
 ## Lancer les tests
 
 ```bash
@@ -98,14 +127,26 @@ products:
 
 ### Sites (`config/sites.yaml`)
 
-Associe un identifiant de site, un label et une icone:
+Associe un identifiant de site, un label, une icone et une strategie de fetch par site (`fetch_mode`):
+
+- `requests` : HTTP classique (rapide, stable)
+- `scraperapi` : proxy anti-blocage via ScraperAPI
+- `browser` : Playwright (fallback navigateur)
+- `auto` : requests puis fallback selon les flags CLI
 
 ```yaml
 sites:
   - id: amazon
     label: Amazon
     icon: "🟧"
+    fetch_mode: requests
 ```
+
+Recommandation pratique:
+- `amazon`, `boulanger`, `castorama` -> `requests`
+- `darty`, `leroy_merlin`, `manomano` -> `scraperapi`
+
+Cela evite les regressions du type HTTP 400 sur Boulanger en mode navigateur.
 
 ## GitHub Actions + GitHub Pages
 
@@ -114,6 +155,10 @@ sites:
 3. Le workflow `.github/workflows/scan-and-publish.yml` s'executera:
    - manuellement (`workflow_dispatch`)
    - automatiquement toutes les 2 heures (`cron: 0 */2 * * *`)
+
+En `workflow_dispatch`, tu peux cocher:
+- `use_scraperapi` pour activer le fallback ScraperAPI
+- `use_browser` pour activer le fallback Playwright
 
 Pour changer la frequence, modifier directement la ligne `cron` du workflow.
 
@@ -133,6 +178,14 @@ Dans `Settings > Secrets and variables > Actions`, ajouter:
 | `SMTP_USER` | Adresse email expediteur | `moncompte@gmail.com` |
 | `SMTP_PASSWORD` | Mot de passe application SMTP | `xxxx xxxx xxxx xxxx` |
 | `ALERT_EMAIL_TO` | Destinataire de l'alerte | `moi@gmail.com` |
+| `SCRAPERAPI_KEY` | Cle API ScraperAPI | `scraperapi_xxx` |
+
+Variables optionnelles (`Actions > Variables`):
+
+| Variable | Description | Exemple |
+|---|---|---|
+| `SCRAPERAPI_COUNTRY_CODE` | Pays proxy ScraperAPI (defaut `fr`) | `fr` |
+| `SCRAPERAPI_RENDER` | Rendu JS ScraperAPI (`true`/`false`) | `false` |
 
 > **Gmail** : utiliser un [mot de passe d'application](https://myaccount.google.com/apppasswords) (pas le mot de passe principal).
 > Activer d'abord la validation en deux etapes sur le compte Google.

@@ -20,6 +20,7 @@ def load_sites(path: Path) -> dict[str, SiteConfig]:
             id=site["id"],
             label=site.get("label", site["id"]),
             icon=site.get("icon", "🛒"),
+            fetch_mode=site.get("fetch_mode", "auto"),
         )
         sites[item.id] = item
     return sites

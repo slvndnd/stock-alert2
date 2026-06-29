@@ -23,6 +23,7 @@ class SiteConfig:
     id: str
     label: str
     icon: str
+    fetch_mode: str = "auto"
 
 
 @dataclass(slots=True)

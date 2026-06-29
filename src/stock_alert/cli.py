@@ -13,6 +13,7 @@ from .notifier import (
 )
 from .render import write_html, write_json
 from .scanner import scan_targets
+from .scraperapi_fetcher import load_scraperapi_config_from_env
 
 logging.basicConfig(
     level=logging.INFO,
@@ -38,6 +39,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Use Playwright fallback for blocked targets (slower, but can bypass some WAF)",
     )
+    parser.add_argument(
+        "--use-scraperapi",
+        action="store_true",
+        help="Use ScraperAPI fallback for blocked targets (requires SCRAPERAPI_KEY)",
+    )
     return parser
 
 
@@ -55,8 +61,21 @@ def main() -> int:
     else:
         print("⚡ Mode requests (HTTP classique) — plus rapide")
 
+    scraperapi_cfg = load_scraperapi_config_from_env()
+    if args.use_scraperapi:
+        if scraperapi_cfg:
+            print("🌐 Fallback ScraperAPI activé pour les sites bloqués")
+        else:
+            LOGGER.warning("--use-scraperapi ignoré: SCRAPERAPI_KEY absent")
+
     try:
-        results = scan_targets(products, sites, use_browser=args.use_browser)
+        results = scan_targets(
+            products,
+            sites,
+            use_browser=args.use_browser,
+            use_scraperapi=args.use_scraperapi,
+            scraperapi_config=scraperapi_cfg,
+        )
     except KeyboardInterrupt:
         print("\n⏹️  Scan interrompu par l'utilisateur")
         return 130

@@ -8,6 +8,11 @@ on:
         required: false
         default: false
         type: boolean
+      use_scraperapi:
+        description: "Use ScraperAPI fallback for blocked sites"
+        required: false
+        default: false
+        type: boolean
   schedule:
     # Toutes les 2 heures. Modifier cette cron si besoin.
     - cron: "0 */2 * * *"
@@ -50,10 +55,18 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
+          SCRAPERAPI_COUNTRY_CODE: ${{ vars.SCRAPERAPI_COUNTRY_CODE || 'fr' }}
+          SCRAPERAPI_RENDER: ${{ vars.SCRAPERAPI_RENDER || 'false' }}
         run: |
           BROWSER_FLAG=""
           if [ "${{ github.event.inputs.use_browser }}" = "true" ]; then
             BROWSER_FLAG="--use-browser"
+          fi
+
+          SCRAPER_FLAG=""
+          if [ "${{ github.event.inputs.use_scraperapi }}" = "true" ]; then
+            SCRAPER_FLAG="--use-scraperapi"
           fi
           
           python -m stock_alert.cli \
@@ -61,7 +74,8 @@ jobs:
             --watchlist config/watchlist.yaml \
             --json-out docs/latest.json \
             --html-out docs/index.html \
-            ${BROWSER_FLAG:-}
+            ${BROWSER_FLAG:-} \
+            ${SCRAPER_FLAG:-}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
