@@ -148,6 +148,39 @@ Recommandation pratique:
 
 Cela evite les regressions du type HTTP 400 sur Boulanger en mode navigateur.
 
+## Gestion des sites anti-bot (Darty, Leroy Merlin, ManoMano)
+
+Ces sites utilisent des protections WAF (Cloudflare) qui bloquent tout scraping, même avec Playwright ou proxy.
+
+**Solution pragmatique** :
+
+1. **Accepter "Accès bloqué"** dans le dashboard (c'est honnête)
+2. **Utiliser idealo.fr** comme comparateur centralisé (gratuit, avec alertes email natives)
+3. **Remplacer les URLs** dans `config/watchlist.yaml` par des liens idealo.fr (optionnel)
+
+### Remplacer par idealo.fr (optionnel)
+
+```bash
+python3 find_idealo_url.py "Climatiseur Midea PortaSplit"
+```
+
+Puis copie l'URL générée dans `config/watchlist.yaml` pour les sites bloqués:
+
+```yaml
+products:
+  - id: midea-portasplit
+    display_name: Midea PortaSplit
+    names: [...]
+    targets:
+      - site: darty
+        url: https://www.idealo.fr/search.html?q=Midea+PortaSplit+climatiseur
+      # ... ou removerl'entrée si tu n'en as pas besoin
+```
+
+### Alternative : enlever les sites bloqués
+
+Simplement supprime les entrées `darty`, `leroy_merlin`, `manomano` de ta watchlist si tu ne veux pas les voir "Accès bloqué".
+
 ## GitHub Actions + GitHub Pages
 
 1. Pousser le projet sur GitHub.
