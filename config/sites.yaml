@@ -6,7 +6,7 @@ sites:
   - id: darty
     label: Darty
     icon: "🔴"
-    fetch_mode: requests
+    fetch_mode: scraperapi
   - id: boulanger
     label: Boulanger
     icon: "🟦"
@@ -14,7 +14,7 @@ sites:
   - id: leroy_merlin
     label: Leroy Merlin
     icon: "🟢"
-    fetch_mode: requests
+    fetch_mode: scraperapi
   - id: castorama
     label: Castorama
     icon: "🟨"
@@ -22,5 +22,5 @@ sites:
   - id: manomano
     label: ManoMano
     icon: "🟣"
-    fetch_mode: requests
+    fetch_mode: scraperapi
 

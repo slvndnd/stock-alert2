@@ -10,15 +10,15 @@ products:
       - site: amazon
         url: https://www.amazon.fr/Climatiseur-Climatisation-rafra%C3%AEchisseur-d%C3%A9shumidificateur-ventilateur/dp/B0CY2YW8BT?ref_=ast_sto_dp
       - site: darty
-        #url: https://www.darty.com/nav/achat/gros_electromenager/chauffage_climatisation/climatiseur/midea_mmcs-12hrn8-qrd0.html
-        url: https://www.idealo.fr/search.html?q=Midea+PortaSplit
+        url: https://www.darty.com/nav/achat/gros_electromenager/chauffage_climatisation/climatiseur/midea_mmcs-12hrn8-qrd0.html
+        #url: https://www.idealo.fr/search.html?q=Midea+PortaSplit
       - site: boulanger
         url: https://www.boulanger.com/ref/1216685
       - site: manomano
-        #url: https://www.manomano.fr/p/midea-climatiseur-split-mobile-reversible-froid-chaud-3500w12000btu-wifi-deshumidificateur-ventilateur-jusqua-40m2-kit-fenetre-inclus-83810402
-        url: https://www.idealo.fr/search.html?q=Midea+PortaSplit
+        url: https://www.manomano.fr/p/midea-climatiseur-split-mobile-reversible-froid-chaud-3500w12000btu-wifi-deshumidificateur-ventilateur-jusqua-40m2-kit-fenetre-inclus-83810402
+        #url: https://www.idealo.fr/search.html?q=Midea+PortaSplit
       - site: leroy_merlin
-        #url: https://www.leroymerlin.fr/produits/climatiseur-split-mobile-reversible-portasplit-midea-par-optimea-93857579.html
-        url: https://www.idealo.fr/search.html?q=Midea+PortaSplit
+        url: https://www.leroymerlin.fr/produits/climatiseur-split-mobile-reversible-portasplit-midea-par-optimea-93857579.html
+        #url: https://www.idealo.fr/search.html?q=Midea+PortaSplit
       - site: castorama
         url: https://www.castorama.fr/climatiseur-portasplit-midea-reversible-3500w/8431312260509_CAFR.prd
